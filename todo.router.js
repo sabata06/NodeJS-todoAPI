@@ -27,4 +27,16 @@ router.post("/", async (req, res) => {
   });
 });
 
+router.get("/:id", async (req, res) => {
+  const data = await Todo.findByPk(req.params.id);
+  res.send({
+    error: false,
+    result: data,
+  });
+});
+
+router.put('/:id', async ()=> {
+  const data = await Todo.update(req.body, );
+})
+
 module.exports = router;
