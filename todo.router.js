@@ -6,6 +6,7 @@
 const router = require("express").Router();
 const { response } = require("express");
 const Todo = require("./todo.model");
+const { where } = require("sequelize");
 
 //*LIST
 router.get("/", async (req, res) => {
@@ -35,8 +36,23 @@ router.get("/:id", async (req, res) => {
   });
 });
 
-router.put('/:id', async ()=> {
-  const data = await Todo.update(req.body, );
-})
+router.put("/:id", async (req, res) => {
+  const data = await Todo.update(req.body, { where: { id: req.params.id } });
+  res.send({
+    error: false,
+    body: req.body,
+    message: "updated",
+    result: data,
+  });
+});
+
+router.delete("/:id", async function (req, res) {
+  const isDeleted = await Todo.destroy({ where: { id: req.params.id } });
+  res.send({
+    error: false,
+    message: "deleted",
+    isUpdated: Boolean(isDeleted),
+  });
+});
 
 module.exports = router;
